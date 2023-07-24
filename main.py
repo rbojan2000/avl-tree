@@ -9,8 +9,11 @@ if __name__ == '__main__':
     root = tree.insert(root, 30)
     root = tree.insert(root, 40)
 
-    tree.inorder_traversal(root)
 
     node = tree.find_key(root, 40)
     if node:
         print('I find that node!')
+    
+    root = tree.delete_node(root, 20)
+
+    tree.inorder_traversal(root)

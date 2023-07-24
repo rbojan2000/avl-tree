@@ -35,7 +35,58 @@ class AvlTree(object):
                return self.left_rotate(root)
      
           return root
-     
+
+     def delete_node(self, root, key):
+          if not root:
+               return root
+
+          if key < root.val:
+               root.left = self.delete_node(root.left, key)
+          elif key > root.val:
+               root.right = self.delete_node(root.right, key)
+          else:
+               if not root.left:
+                    temp = root.right
+                    root = None
+                    return temp
+               elif not root.right:
+                    temp = root.left
+                    root = None
+                    return temp
+
+               # 3. Ako čvor ima oba deteta, nalazimo najmanji čvor u desnom podstablu (naslednika)
+               temp = self.get_min_value_node(root.right)
+               root.val = temp.val
+               # 4. Brišemo naslednika
+               root.right = self.delete_node(root.right, temp.val)
+
+          # Ažuriranje visine čvora
+          root.height = 1 + max(self.get_height(root.left), self.get_height(root.right))
+
+          # Balansiranje stabla nakon brisanja
+          balance = self.get_balance(root)
+
+          # Case 1 - Left Left
+          if balance > 1 and self.get_balance(root.left) >= 0:
+               return self.right_rotate(root)
+
+          # Case 2 - Right Right
+          if balance < -1 and self.get_balance(root.right) <= 0:
+               return self.left_rotate(root)
+
+          # Case 3 - Left Right
+          if balance > 1 and self.get_balance(root.left) < 0:
+               root.left = self.left_rotate(root.left)
+               return self.right_rotate(root)
+
+          # Case 4 - Right Left
+          if balance < -1 and self.get_balance(root.right) > 0:
+               root.right = self.right_rotate(root.right)
+               return self.left_rotate(root)
+
+          return root
+
+
      def left_rotate(self, z):
      
           y = z.right
@@ -84,6 +135,12 @@ class AvlTree(object):
                return self.find_key(root.right, key)
           else:
                return self.find_key(root.left, key)
+          
+     def get_min_value_node(self, root):
+          current = root
+          while current.left:
+               current = current.left
+          return current
 
      def inorder_traversal(self, root, level=0, prefix="Root:"):
           if root:
