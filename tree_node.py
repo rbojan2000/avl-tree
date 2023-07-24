@@ -4,4 +4,4 @@ class TreeNode(object):
         self.left = None
         self.right = None
         self.height = 1
- 
+    

@@ -76,7 +76,15 @@ class AvlTree(object):
                return 0
      
           return self.get_height(root.left) - self.get_height(root.right)
- 
+     
+     def find_key(self, root, key):
+          if root.val == key:
+               return root
+          elif key > root.val:
+               return self.find_key(root.right, key)
+          else:
+               return self.find_key(root.left, key)
+
      def inorder_traversal(self, root, level=0, prefix="Root:"):
           if root:
                print(" " * (level * 4) + prefix + str(root.val))
