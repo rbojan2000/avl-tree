@@ -54,16 +54,12 @@ class AvlTree(object):
                     root = None
                     return temp
 
-               # 3. Ako čvor ima oba deteta, nalazimo najmanji čvor u desnom podstablu (naslednika)
                temp = self.get_min_value_node(root.right)
                root.val = temp.val
-               # 4. Brišemo naslednika
                root.right = self.delete_node(root.right, temp.val)
 
-          # Ažuriranje visine čvora
           root.height = 1 + max(self.get_height(root.left), self.get_height(root.right))
 
-          # Balansiranje stabla nakon brisanja
           balance = self.get_balance(root)
 
           # Case 1 - Left Left
